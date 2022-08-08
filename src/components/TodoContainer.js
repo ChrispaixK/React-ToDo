@@ -1,21 +1,23 @@
 import React from "react";
 import TodoList from "./TodoList";
+import InputTodo from "./InputTodo";
+import { v4 as uuidv4 } from "uuid";
 
 class TodoContainer extends React.Component {
     state = {
         todos : [
             {
-                id: 1,
+                id: uuidv4(),
                 title: "Seetup development environment",
                 completed: false
             },
             {
-                id: 2,
+                id: uuidv4(),
                 title: "Develop website and add content",
                 completed : false
             },
             {
-                id: 3,
+                id: uuidv4(),
                 title : "Deploy to live server",
                 completed: false
             }
@@ -40,12 +42,23 @@ class TodoContainer extends React.Component {
             ]
           });
       };
+      addTodoItem = title => {
+        const newTodo = {
+            id: 4,
+            title: title,
+            completed: false
+          };
+          this.setState({
+            todos: [...this.state.todos, newTodo]
+          });
+      };
     // the render below is a component render differently to the render called in index.js
     //it takes no argument and and does not directly interact with the browser
     //It focuses on returning the corresponding React elements for that component
     render() {
         return (
            <div>
+            <InputTodo addTodoProps={this.addTodoItem} />
             <TodoList 
             todos={this.state.todos} 
             handleChangeProps={this.handleChange}
