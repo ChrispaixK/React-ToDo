@@ -1,0 +1,87 @@
+import React from "react";
+import TodoList from "./TodoList";
+import InputTodo from "./InputTodo";
+import { v4 as uuidv4 } from "uuid";
+import Header from "./Header";
+class TodoContainer extends React.Component {
+    state = {
+        todos : [],
+    }
+    handleChange = (id) => {
+        this.setState(prevState => ({
+            todos: prevState.todos.map(todo => {
+              if (todo.id === id) {
+                return { ...todo,completed: !todo.completed}
+              }
+              return todo
+            }),
+          }))
+    }
+    delTodo = id => {
+        this.setState({
+            todos: [
+              ...this.state.todos.filter(todo => {
+                return todo.id !== id;
+              })
+            ]
+          });
+      };
+      addTodoItem = title => {
+        const newTodo = {
+            id: uuidv4(),
+            title: title,
+            completed: false
+          };
+          this.setState({
+            todos: [...this.state.todos, newTodo]
+          });
+      };
+      setUpdate = (updatedTitle, id) => {
+        this.setState({
+          todos: this.state.todos.map(todo => {
+            if (todo.id === id) {
+              todo.title = updatedTitle
+            }
+            return todo
+          }),
+        })
+      } 
+    //get stored items in the local storage in the componentDidMount lifecycle
+    componentDidMount() {
+      const temp = localStorage.getItem("todos")
+      const loadedTodos = JSON.parse(temp)
+      if (loadedTodos) {
+        this.setState({
+          todos: loadedTodos
+        })
+      }
+    }  
+    // add items in localstorage in tghe componentDidUpdate lifecycle
+    componentDidUpdate(prevProps, prevState) {
+      if(prevState.todos !== this.state.todos) {
+        const temp = JSON.stringify(this.state.todos)
+        localStorage.setItem("todos", temp)
+      }
+    }
+    // the render below is a component render differently to the render called in index.js
+    //it takes no argument and and does not directly interact with the browser
+    //It focuses on returning the corresponding React elements for that component
+    render() {
+        return (
+          <div className="container">
+            <div className="inner">
+                <Header/>
+              <InputTodo addTodoProps={this.addTodoItem} />
+              <TodoList
+                todos={this.state.todos}
+                handleChangeProps={this.handleChange}
+                deleteTodoProps={this.delTodo}
+                setUpdate={this.setUpdate}
+              />
+            </div>
+          </div>
+        );
+      }
+}
+
+export default TodoContainer
