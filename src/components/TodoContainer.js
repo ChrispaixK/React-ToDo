@@ -2,7 +2,7 @@ import React from "react";
 import TodoList from "./TodoList";
 import InputTodo from "./InputTodo";
 import { v4 as uuidv4 } from "uuid";
-
+import Header from "./Header";
 class TodoContainer extends React.Component {
     state = {
         todos : [
@@ -44,7 +44,7 @@ class TodoContainer extends React.Component {
       };
       addTodoItem = title => {
         const newTodo = {
-            id: 4,
+            id: uuidv4(),
             title: title,
             completed: false
           };
@@ -52,21 +52,35 @@ class TodoContainer extends React.Component {
             todos: [...this.state.todos, newTodo]
           });
       };
+      setUpdate = (updatedTitle, id) => {
+        this.setState({
+          todos: this.state.todos.map(todo => {
+            if (todo.id === id) {
+              todo.title = updatedTitle
+            }
+            return todo
+          }),
+        })
+      }
     // the render below is a component render differently to the render called in index.js
     //it takes no argument and and does not directly interact with the browser
     //It focuses on returning the corresponding React elements for that component
     render() {
         return (
-           <div>
-            <InputTodo addTodoProps={this.addTodoItem} />
-            <TodoList 
-            todos={this.state.todos} 
-            handleChangeProps={this.handleChange}
-            deleteTodoProps={this.delTodo}
-            />
-           </div>
-        )
-    }
+          <div className="container">
+            <div className="inner">
+                <Header/>
+              <InputTodo addTodoProps={this.addTodoItem} />
+              <TodoList
+                todos={this.state.todos}
+                handleChangeProps={this.handleChange}
+                deleteTodoProps={this.delTodo}
+                setUpdate={this.setUpdate}
+              />
+            </div>
+          </div>
+        );
+      }
 }
 
 export default TodoContainer
