@@ -5,23 +5,7 @@ import { v4 as uuidv4 } from "uuid";
 import Header from "./Header";
 class TodoContainer extends React.Component {
     state = {
-        todos : [
-            {
-                id: uuidv4(),
-                title: "Seetup development environment",
-                completed: false
-            },
-            {
-                id: uuidv4(),
-                title: "Develop website and add content",
-                completed : false
-            },
-            {
-                id: uuidv4(),
-                title : "Deploy to live server",
-                completed: false
-            }
-        ]
+        todos : [],
     }
     handleChange = (id) => {
         this.setState(prevState => ({
@@ -61,7 +45,24 @@ class TodoContainer extends React.Component {
             return todo
           }),
         })
+      } 
+    //get stored items in the local storage in the componentDidMount lifecycle
+    componentDidMount() {
+      const temp = localStorage.getItem("todos")
+      const loadedTodos = JSON.parse(temp)
+      if (loadedTodos) {
+        this.setState({
+          todos: loadedTodos
+        })
       }
+    }  
+    // add items in localstorage in tghe componentDidUpdate lifecycle
+    componentDidUpdate(prevProps, prevState) {
+      if(prevState.todos !== this.state.todos) {
+        const temp = JSON.stringify(this.state.todos)
+        localStorage.setItem("todos", temp)
+      }
+    }
     // the render below is a component render differently to the render called in index.js
     //it takes no argument and and does not directly interact with the browser
     //It focuses on returning the corresponding React elements for that component

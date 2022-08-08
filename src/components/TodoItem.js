@@ -16,7 +16,10 @@ class TodoItem extends React.Component {
           this.setState({ editing: false })
         }
       }
-      
+     // clean memory after removing DOM using componentWillUnmount() method , ex: removing a todo list element
+     componentWillUnmount() {
+      console.log("Cleaning up...")
+    }  
     render () {
         const { completed, id, title } = this.props.todo
         const completedStyle = {
