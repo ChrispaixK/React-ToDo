@@ -1,4 +1,5 @@
 import React from "react";
+import TodoList from "./TodoList";
 
 class TodoContainer extends React.Component {
     state = {
@@ -25,11 +26,9 @@ class TodoContainer extends React.Component {
     //It focuses on returning the corresponding React elements for that component
     render() {
         return (
-            <ul>
-                {this.state.todos.map(todo => (
-                    <li>{todo.title}</li>
-                ))}
-            </ul>
+           <div>
+            <TodoList todos={this.state.todos}/>
+           </div>
         )
     }
 }
