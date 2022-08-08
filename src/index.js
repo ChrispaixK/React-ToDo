@@ -1,9 +1,13 @@
 import React from "react";
-import ReactDOM  from "react-dom";
-
-//component file
+//for new react version instead of using ReactDom use createRoot 
+import { createRoot } from "react-dom/client"
+//import component main file
 import TodoContainer from "./components/TodoContainer";
-ReactDOM.render(
-<React.StrictMode>
-    <TodoContainer/>
-</React.StrictMode>, document.getElementById("root"))
+
+const container = document.getElementById("root");
+const root = createRoot(container);
+root.render(
+  <React.StrictMode>
+    <TodoContainer />
+  </React.StrictMode>
+);

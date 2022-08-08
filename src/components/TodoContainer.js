@@ -25,13 +25,11 @@ class TodoContainer extends React.Component {
     //It focuses on returning the corresponding React elements for that component
     render() {
         return (
-            <div> 
-                <h1>Hello from Create React App</h1>
-                <p>I am in a React Component</p>
-                <div>
-                    <p>I am in a Random nested div</p>
-                </div>
-            </div>
+            <ul>
+                {this.state.todos.map(todo => (
+                    <li>{todo.title}</li>
+                ))}
+            </ul>
         )
     }
 }
