@@ -1,6 +1,6 @@
 import React from 'react';
 
-class Header extends React.Component {
+class Header extends React.PureComponent {
   render() {
     const headerStyle = {
       padding: '20px 0',

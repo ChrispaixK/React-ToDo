@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 import styles from './TodoItem.module.css';
 
 const TodoItem = (props) => {
@@ -21,8 +22,12 @@ const TodoItem = (props) => {
     textDecoration: 'line-through',
   };
 
-  const { completed, id, title } = props.todo;
-
+  const {
+    todo: { completed, id, title },
+    setUpdate,
+    deleteTodoProps,
+    handleChangeProps,
+  } = props;
   const viewMode = {};
   const editMode = {};
 
@@ -32,9 +37,9 @@ const TodoItem = (props) => {
     editMode.display = 'none';
   }
 
-  useEffect(() => () => {
-    console.log('Cleaning up...');
-  }, []);
+  // useEffect(() => () => {
+  //   console.log('Cleaning up...');
+  // }, []);
 
   return (
     <li className={styles.item}>
@@ -43,9 +48,11 @@ const TodoItem = (props) => {
           type="checkbox"
           className={styles.checkbox}
           checked={completed}
-          onChange={() => props.handleChangeProps(id)}
+          onChange={() => handleChangeProps(id)}
         />
-        <button onClick={() => props.deleteTodoProps(id)}>Delete</button>
+        <button type="button" onClick={() => deleteTodoProps(id)}>
+          Delete
+        </button>
         <span style={completed ? completedStyle : null}>{title}</span>
       </div>
       <input
@@ -54,7 +61,7 @@ const TodoItem = (props) => {
         className={styles.textInput}
         value={title}
         onChange={(e) => {
-          props.setUpdate(e.target.value, id);
+          setUpdate(e.target.value, id);
         }}
         onKeyDown={handleUpdatedDone}
       />
@@ -62,4 +69,11 @@ const TodoItem = (props) => {
   );
 };
 
+TodoItem.propTypes = {
+  todo: PropTypes.objectOf(PropTypes.string, PropTypes.string, PropTypes.bool)
+    .isRequired,
+  handleChangeProps: PropTypes.func.isRequired,
+  deleteTodoProps: PropTypes.func.isRequired,
+  setUpdate: PropTypes.func.isRequired,
+};
 export default TodoItem;

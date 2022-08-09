@@ -4,9 +4,14 @@ import Header from './Header';
 import InputTodo from './InputTodo';
 import TodosList from './TodoList';
 
+function getInitialTodos() {
+  // getting stored items
+  const temp = localStorage.getItem('todos');
+  const savedTodos = JSON.parse(temp);
+  return savedTodos || [];
+}
 const TodoContainer = () => {
   const [todos, setTodos] = useState(getInitialTodos());
-
   const handleChange = (id) => {
     setTodos((prevState) => prevState.map((todo) => {
       if (todo.id === id) {
@@ -35,36 +40,13 @@ const TodoContainer = () => {
   };
 
   const setUpdate = (updatedTitle, id) => {
-    setTodos(
-      todos.map((todo) => {
-        if (todo.id === id) {
-          todo.title = updatedTitle;
-        }
-        return todo;
-      }),
-    );
+    const newTodos = todos.slice();
+    const toUpdate = newTodos.find((todo) => todo.id === id);
+    toUpdate.title = updatedTitle;
+    setTodos(newTodos);
   };
 
-  // useEffect(() => {
-  //   console.log("test run")
-
-  //   // getting stored items
-  //   const temp = localStorage.getItem("todos")
-  //   const loadedTodos = JSON.parse(temp)
-
-  //   if (loadedTodos) {
-  //     setTodos(loadedTodos)
-  //   }
-  // }, [])
-  function getInitialTodos() {
-    // getting stored items
-    const temp = localStorage.getItem('todos');
-    const savedTodos = JSON.parse(temp);
-    return savedTodos || [];
-  }
-
   useEffect(() => {
-    console.log('use effect running');
     // storing todos items
     const temp = JSON.stringify(todos);
     localStorage.setItem('todos', temp);
